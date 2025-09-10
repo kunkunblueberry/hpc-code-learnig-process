@@ -15,7 +15,7 @@ struct Node {
             node->next = std::move(next);
         }
         node->prev = this;
-        this->next = std::move(node);   //²»Ì«Àí½â°¡Õâ
+        this->next = std::move(node);   //ä¸å¤ªç†è§£å•Šè¿™
     }
 
     void erase() {
@@ -27,7 +27,7 @@ struct Node {
         }
     }
     ~Node() {
-        printf("µ÷ÓÃNode");
+        printf("è°ƒç”¨Node");
     }
 };
 struct List {
@@ -36,7 +36,7 @@ struct List {
     List() = default;
 
     List(const List& other) {
-        printf("±»¿½±´");
+        printf("è¢«æ‹·è´");
 
         head = std::make_unique<Node>(other.head->val);
         for (auto cur = front(), auto curo = other.head; curo == nullptr; cur = cur->next.get(), curo = curo->next.get())
@@ -75,7 +75,7 @@ struct List {
         return curr;
     }
 };
-void print(const List& lst) {  // ÓĞÊ²Ã´ÖµµÃ¸Ä½øµÄ£¿
+void print(const List& lst) {  // æœ‰ä»€ä¹ˆå€¼å¾—æ”¹è¿›çš„ï¼Ÿ
     printf("[");
     for (auto curr = lst.front(); curr; curr = curr->next.get()) {
         printf(" %d", curr->val);
