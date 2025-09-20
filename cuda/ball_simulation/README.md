@@ -34,5 +34,36 @@ main{
 //这样才能被使用，但是用nvcc在linux编译就不会
 
 
-实测在vs 2022里面无法被
 
+    时间记录接口
+    测量全部
+    cudaEvent_t start_total, stop_total;
+    cudaEventCreate(&start_total);
+    cudaEventCreate(&stop_total);
+
+    // 计时事件：测量核函数
+    cudaEvent_t start_kernel, stop_kernel;
+    cudaEventCreate(&start_kernel);
+    cudaEventCreate(&stop_kernel);
+
+//调用启动接口
+    cudaEventRecord(start_total);
+    cudaEventSynchronize(stop_kernel); // 确保事件已记录
+    cudaEventRecord(stop_total);
+    cudaEventSynchronize(stop_total); // 确保事件已记录
+
+//时间打印，很方便咯
+float kernel_time = 0;
+    cudaEventElapsedTime(&kernel_time, start_kernel, stop_kernel);
+    printf("核函数执行时间: %.3f 毫秒\n", kernel_time);
+
+    // 计算并打印整个程序执行时间
+    float total_time = 0;
+    cudaEventElapsedTime(&total_time, start_total, stop_total);
+    printf("整个程序执行时间: %.3f 毫秒\n", total_time);
+
+    // 销毁事件（可选，程序结束会自动释放，显式销毁更规范）
+    cudaEventDestroy(start_total);
+    cudaEventDestroy(stop_total);
+    cudaEventDestroy(start_kernel);
+    cudaEventDestroy(stop_kernel);
